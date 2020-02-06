@@ -39,24 +39,24 @@ class MPF(gillespy2.Model):
               initial_value: value/population count of species at start of simulation
               '''
               #cdc2
-              C2 = gillespy2.Species(name='C2', initial_value=301)
+              C2 = gillespy2.Species(name='C2', initial_value=15)
               #cdc2p
-              CP = gillespy2.Species(name='CP', initial_value=120)
+              CP = gillespy2.Species(name='CP', initial_value=15)
               #cdc2p inactive
-              pM = gillespy2.Species(name='pM', initial_value=0)
+              pM = gillespy2.Species(name='pM', initial_value = 1)
               #active dimer cyc-p-cdc2
-              M = gillespy2.Species(name='D', initial_value=0)
+              M = gillespy2.Species(name='D', initial_value=1)
               #cyc
-              Y = gillespy2.Species(name='Y', initial_value=120)
+              Y = gillespy2.Species(name='Y', initial_value=5)
               #cyc-p
-              YP = gillespy2.Species(name='YP', initial_value=0)
+              YP = gillespy2.Species(name='YP', initial_value=5)
               #aminoacids
               aa = gillespy2.Species(name= 'aa', initial_value=1)
 
 
 
               # Add species to the model
-              self.add_species([C2, CP, pM, M, Y, YP, aa])
+              self.add_species([C2, CP, pM, M, Y, YP])
 
               '''Reactions:
               These are the reaction channels causing the system to change over time
@@ -66,7 +66,7 @@ class MPF(gillespy2.Model):
               products: dictionary with reaction products as keys, and number formed per reaction as value.
               rate: parameter rate constant to be applied to the propensity of this reaction firing
               propensity_function: can be used instead of rate in order to declare a custom propensity function in string format'''
-              r1 = gillespy2.Reaction(name="r1", reactants={aa: 1}, products={Y: 1},
+              r1 = gillespy2.Reaction(name="r1", reactants={}, products={Y: 1},
                                       rate=k1aaCT)
 
               r2 = gillespy2.Reaction(name="r2", reactants={Y: 1}, products={aa: 1},
@@ -84,7 +84,7 @@ class MPF(gillespy2.Model):
               r6 = gillespy2.Reaction(name="r6", reactants={M: 1}, products={C2: 1, YP: 1},
                                       rate=k6)
 
-              r7 = gillespy2.Reaction(name="r7", reactants={YP: 1}, products={aa: 1},
+              r7 = gillespy2.Reaction(name="r7", reactants={YP: 1}, products={},
                                       rate=k7)
 
               r8 = gillespy2.Reaction(name="r8", reactants={C2: 1}, products={CP: 1},
