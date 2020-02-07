@@ -56,11 +56,9 @@ V_p = np.array([[1, 0, 0, 0, 0, 0],
 # initial concentration
 X0 = np.array([Y[0], pM[0], M[0], YP[0], C2[0], CP[0]])
 
-# number steps to be used in 
-timespan = np.linspace(0, 100, 101)
 # reaction rates
-time = 0
-for t in timespan:
+time = [0.0]
+while time[-1] < 0.5: 
     # rate of each reaction
     k = np.array([k1aaCT, k2, k3CT/(C2[-1] + CP[-1] +pM[-1] + M[-1]), 
     (k4prime+k4*((M[-1]/CT[-1])**2)), k5tilP, k6, k7, k8tilP, k9])
@@ -68,20 +66,21 @@ for t in timespan:
     species= np.array([1, Y[-1], CP[-1], pM[-1], M[-1], M[-1], YP[-1], C2[-1], CP[-1]])
     # Calculate The total reaction rate
     rates = k*species
-    Rtot= rates.sum()
+    Rtot = rates.sum()
     # Calculate probability of each reaction occurring 
     ProbReact = rates/Rtot
-    
-    #TODO: Calculate weighted probability of each reaction occurring i.e propensity functions
-    
-    # Generate random numbers r1,r2 uniformly distributed in (0,1)
+
+    # distributed propensities
+    tot = 0.0
+    propensity = []
+    for prob in ProbReact:
+        tot = tot + prob
+        propensity.append(tot)
+
+     # Generate random numbers r1,r2 uniformly distributed in (0,1)
     r1 = np.random.rand()
     r2 = np.random.rand()
 
-# if using tau leaping
-#TODO:calculate alpha
-alpha = 1.0
-
-# Compute the time until the next reaction takes place.
-tau = (1.0/alpha)*np.log(float(1.0/r1))
-time = time +tau
+    # Compute the time until the next reaction takes place.
+    tau = (1.0/ Rtot)*np.log(float(1.0/r1))
+    time.append(time[-1] +tau)
